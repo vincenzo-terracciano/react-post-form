@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+const api_endpoint = 'https://67c5b4f3351c081993fb1ab6.mockapi.io/api/posts'
 
 function App() {
 
@@ -12,10 +12,24 @@ function App() {
 
   function handleFormData(e) {
     const key = e.target.name;
-    const value = e.target.value;
+    const value = e.target.type === 'radio' ? e.target.value === 'true' : e.target.value;
     setFormData({ ...formData, [key]: value })
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
     console.log(formData);
 
+
+    fetch(api_endpoint, {
+      method: 'POST',
+      body: JSON.stringify(formData)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+
+      })
   }
 
   return (
@@ -24,7 +38,7 @@ function App() {
 
       <div className="container">
 
-        <form>
+        <form method='POST' onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="author" className="form-label">Name</label>
             <input
@@ -77,6 +91,8 @@ function App() {
               Draft
             </label>
           </div>
+
+          <button type="submit" className='btn btn-primary my-3'>Submit</button>
 
         </form>
       </div>
