@@ -7,7 +7,7 @@ function App() {
     author: '',
     title: '',
     body: '',
-    public: false
+    public: true
   })
 
   function handleFormData(e) {
@@ -23,12 +23,14 @@ function App() {
 
     fetch(api_endpoint, {
       method: 'POST',
-      body: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
     })
       .then(res => res.json())
       .then(data => {
         console.log(data);
-
       })
       .catch(err => {
         console.error(err);
@@ -83,12 +85,14 @@ function App() {
 
           <div className="form-check">
             <input className="form-check-input" type="radio" name="public" id="public"
+              checked={formData.public === true}
               value='true'
               onChange={handleFormData} />
             <label className="form-check-label" htmlFor="public"> Public </label>
           </div>
           <div className="form-check">
             <input className="form-check-input" type="radio" name="public" id="draft"
+              checked={formData.public === false}
               value='false'
               onChange={handleFormData} />
             <label className="form-check-label" htmlFor="public">
